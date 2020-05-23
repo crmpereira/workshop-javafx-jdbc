@@ -23,7 +23,6 @@
 hs_err_pid*
 
 
-
 # build folders
 bin/
 target/
@@ -31,4 +30,4 @@ nbproject/private/
 build/
 nbbuild/
 dist/
-nbdist/ 
+nbdist/ 
