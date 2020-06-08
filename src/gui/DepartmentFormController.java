@@ -1,16 +1,18 @@
 package gui;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import db.DbException;
+import gui.listeners.DataChangeListener;
 import gui.util.Alerts;
 import gui.util.Constraints;
 import gui.util.Utils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -23,6 +25,8 @@ public class DepartmentFormController implements Initializable  {
 	
 	private Department entity;
 	private DepartmentService service;
+	private List<DataChangeListener>  dataChangeListeners = new ArrayList<>();
+	
 	
 	
 	@FXML
@@ -55,6 +59,7 @@ public class DepartmentFormController implements Initializable  {
 			entity = getFormData();
 			service.saveOrUpdate(entity);
 			Utils.currentStage(event).close();
+			notifyDataChengeListeners();
 		}
 		catch(DbException e) {
 			Alerts.showAlert("Error saving objects", null , e.getMessage(), AlertType.ERROR);
@@ -62,6 +67,12 @@ public class DepartmentFormController implements Initializable  {
 		
 	}
 	
+	private void notifyDataChengeListeners() {
+		for (DataChangeListener listener: dataChangeListeners) {
+			listener.OnDataChanged();
+		}
+	}
+
 	private Department getFormData() {
 		Department obj = new Department();
 		obj.setId(Utils.tryParseToInt(txtId.getText()));
@@ -83,8 +94,11 @@ public class DepartmentFormController implements Initializable  {
 		this.service = service;
 	}
 	
+	public void subscribeDataChangeListener (DataChangeListener listener) {
+		dataChangeListeners.add(listener);
+	}
 	
-	
+		
 	public void updateFormData() {
 		if (entity == null ) {
 			throw new IllegalStateException("Entity was null");
