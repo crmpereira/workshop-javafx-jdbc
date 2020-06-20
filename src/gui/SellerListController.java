@@ -93,7 +93,7 @@ public class SellerListController implements Initializable, DataChangeListener {
 		tableColumnBithDate.setCellValueFactory(new PropertyValueFactory<>("birthDate"));
 		tableColumnBaseSalary.setCellValueFactory(new PropertyValueFactory<>("baseSalary"));
 		Utils.formatTableColumnDate(tableColumnBithDate, "dd/mm/yyyy");
-		Utils.formatTableColumnDouble(tableColumnBaseSalary,2 );
+		Utils.formatTableColumnDouble(tableColumnBaseSalary,2);
 		
 		Stage stage = (Stage) Main.getMainScene().getWindow();
 		tableViewSeller.prefHeightProperty().bind(stage.heightProperty());
